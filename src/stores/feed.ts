@@ -34,9 +34,9 @@ export const useFeedStore = defineStore({
   },
   actions: {
     prepareChannelList() {
-      this.channelList.set("all", {
-        name: "全ての記事",
-        q: "https://techfeed.io/feeds/categories/all",
+      this.channelList.set("Vue.js", {
+        name: "Vue.js",
+        q: "https://techfeed.io/feeds/channels/Vue.js",
       });
       this.channelList.set("Cat😺", {
         name: "猫😺",
@@ -48,6 +48,7 @@ export const useFeedStore = defineStore({
       const toJsonUrl = "https://api.rss2json.com/v1/api.json?rss_url=";
       const fullUrl = `${toJsonUrl}${this.selectedChannel.q}`;
       const response = await fetch(fullUrl);
+      console.log(response);
       const feedListJson = await response.json();
       const feedArray = feedListJson.items;
       this.feeds = feedArray;
