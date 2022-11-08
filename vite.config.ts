@@ -5,7 +5,10 @@ import vue from "@vitejs/plugin-vue";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: "Vue3-rss",
+  base: process.env.NODE_ENV === "production" ? "/vue3-rss/" : "./",
+  build: {
+    outDir: "docs",
+  },
   plugins: [vue()],
   resolve: {
     alias: {

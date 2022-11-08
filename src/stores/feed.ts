@@ -6,10 +6,12 @@ export interface Channel {
 }
 
 interface Feed {
+  id: string;
   title: string;
-  pubDate: string;
-  link: string;
-  thumbnail: string;
+  summary: string;
+  link: { href: string; rel: string };
+  updated: string;
+  thumbnail: { url: string };
 }
 
 interface State {
@@ -34,23 +36,23 @@ export const useFeedStore = defineStore({
   },
   actions: {
     prepareChannelList() {
+      this.channelList.set("ALL", {
+        name: "全ての記事",
+        q: "https://techfeed.io/feeds/categories/all",
+      });
       this.channelList.set("Vue.js", {
         name: "Vue.js",
         q: "https://techfeed.io/feeds/channels/Vue.js",
       });
-      this.channelList.set("Cat😺", {
-        name: "猫😺",
-        q: "https://techfeed.io/feeds/channels/Cat%F0%9F%98%BA",
-      });
     },
     async recieveFeedList(slug: string) {
+      this.isLoading = true;
       this.selectedChannel = this.channelList.get(slug) as Channel;
-      const toJsonUrl = "https://api.rss2json.com/v1/api.json?rss_url=";
+      const toJsonUrl = "https://api.factmaven.com/xml-to-json/?xml=";
       const fullUrl = `${toJsonUrl}${this.selectedChannel.q}`;
       const response = await fetch(fullUrl);
-      console.log(response);
       const feedListJson = await response.json();
-      const feedArray = feedListJson.items;
+      const feedArray = feedListJson.feed.entry;
       this.feeds = feedArray;
       this.isLoading = false;
     },

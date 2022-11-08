@@ -19,15 +19,23 @@ const openLink = (link: string): void => {
 </script>
 
 <template>
-  <p v-if="isLoadding">データ取得中...</p>
-  <p v-else>
-    <FeedBox
-      v-for="feed in feedStore.feeds"
-      :key="feed.title"
-      :title="feed.title"
-      :pub-date="feed.pubDate"
-      :src="feed.thumbnail"
-      @openLink="openLink(feed.link)"
-    ></FeedBox>
-  </p>
+  <div class="wrapper">
+    <p v-if="isLoadding">データ取得中...</p>
+    <p v-else>
+      <FeedBox
+        v-for="feed in feedStore.feeds"
+        :key="feed.title"
+        :title="feed.title"
+        :pub-date="feed.updated"
+        :src="feed.thumbnail.url"
+        @openLink="openLink(feed.link.href)"
+      ></FeedBox>
+    </p>
+  </div>
 </template>
+
+<style scoped>
+.wrapper {
+  margin-top: 20px;
+}
+</style>
